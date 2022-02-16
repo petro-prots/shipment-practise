@@ -27,6 +27,16 @@ class Zhiguli extends \Magento\Shipping\Model\Carrier\AbstractCarrier implements
     private ResultFactory $resultFactory;
     private MethodFactory $rateMethodFactory;
 
+    /**
+     * Zhiguli constructor.
+     *
+     * @param ScopeConfigInterface $scopeConfig
+     * @param ErrorFactory $rateErrorFactory
+     * @param LoggerInterface $logger
+     * @param ResultFactory $resultFactory
+     * @param MethodFactory $rateMethodFactory
+     * @param array $data
+     */
     public function __construct(
         ScopeConfigInterface $scopeConfig,
         ErrorFactory $rateErrorFactory,
@@ -41,10 +51,12 @@ class Zhiguli extends \Magento\Shipping\Model\Carrier\AbstractCarrier implements
     }
 
     /**
-     * Collect and get rates
+     * Collect and get rates.
      *
      * @param RateRequest $request
+     *
      * @return Result|bool
+     *
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      * @SuppressWarnings(PHPMD.NPathComplexity)
      */
@@ -70,6 +82,7 @@ class Zhiguli extends \Magento\Shipping\Model\Carrier\AbstractCarrier implements
      * Creates result method
      *
      * @param int|float $shippingPrice
+     *
      * @return \Magento\Quote\Model\Quote\Address\RateResult\Method
      */
     private function createResultMethod($shippingPrice)

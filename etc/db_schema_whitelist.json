@@ -1,0 +1,16 @@
+{
+    "nova_poshta_shipment": {
+        "column": {
+            "id": true,
+            "customer_id": true,
+            "track_number": true
+        },
+        "index": {
+            "NOVA_POSHTA_SHIPMENT_ID": true
+        },
+        "constraint": {
+            "PRIMARY": true,
+            "NOVA_POSHTA_SHIPMENT_CUSTOMER_ID_CUSTOMER_ENTITY_ENTITY_ID": true
+        }
+    }
+}
