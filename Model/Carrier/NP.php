@@ -9,7 +9,6 @@ declare(strict_types=1);
 
 namespace ProfStep\Shipment\Model\Carrier;
 
-
 use Magento\CatalogInventory\Api\StockRegistryInterface;
 use Magento\Directory\Helper\Data;
 use Magento\Directory\Model\CountryFactory;
@@ -42,7 +41,7 @@ class NP extends AbstractCarrierOnline implements CarrierInterface
     private NPModel $np;
 
     /**
-     * Zhiguli constructor.
+     * NP constructor.
      *
      * @param ScopeConfigInterface $scopeConfig
      * @param ErrorFactory $rateErrorFactory
@@ -82,8 +81,7 @@ class NP extends AbstractCarrierOnline implements CarrierInterface
         ResultFactory $resultFactory,
         NPModel $np,
         array $data = []
-    )
-    {
+    ) {
         parent::__construct(
             $scopeConfig,
             $rateErrorFactory,
@@ -185,7 +183,7 @@ class NP extends AbstractCarrierOnline implements CarrierInterface
         return [$this->_code => $this->getConfigData('name')];
     }
 
-    protected function _doShipmentRequest(\Magento\Framework\DataObject $request)
+    protected function _doShipmentRequest(DataObject $request)
     {
         //TODO: Implement _doShipmentRequest() method.
     }
