@@ -12,6 +12,9 @@
                                         <item name="zhiguli-rates-validation" xsi:type="array">
                                             <item name="component" xsi:type="string">ProfStep_Shipment/js/view/shipping-rates-validation/zhiguli</item>
                                         </item>
+                                        <item name="np-rates-validation" xsi:type="array">
+                                            <item name="component" xsi:type="string">ProfStep_Shipment/js/view/shipping-rates-validation/np</item>
+                                        </item>
                                     </item>
                                 </item>
                             </item>

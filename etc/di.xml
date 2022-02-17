@@ -2,4 +2,6 @@
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
     <preference for="ProfStep\Shipment\Api\Data\NPInterface" type="ProfStep\Shipment\Model\NP"/>
+
+    <preference for="ProfStep\Shipment\Api\Data\NpRequestResultInterface" type="ProfStep\Shipment\Model\NPRequestResult"/>
 </config>

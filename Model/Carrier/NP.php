@@ -16,6 +16,7 @@ use Magento\Directory\Model\CurrencyFactory;
 use Magento\Directory\Model\RegionFactory;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\DataObject;
+use Magento\Framework\Exception\AlreadyExistsException;
 use Magento\Framework\Xml\Security;
 use Magento\Quote\Model\Quote\Address\RateRequest;
 use Magento\Quote\Model\Quote\Address\RateResult\ErrorFactory;
@@ -28,7 +29,11 @@ use Magento\Shipping\Model\Rate\Result;
 use Magento\Shipping\Model\Rate\ResultFactory;
 use Magento\Shipping\Model\Simplexml\ElementFactory;
 use Magento\Shipping\Model\Tracking\Result\StatusFactory;
+use ProfStep\Shipment\Api\Data\NPInterface;
+use ProfStep\Shipment\Api\Data\NpRequestResultInterfaceFactory;
 use ProfStep\Shipment\Model\NP as NPModel;
+use ProfStep\Shipment\Model\ResourceModel\NP as NPResource;
+use ProfStep\Shipment\Model\ResourceModel\NP\TrackNumberManager;
 use Psr\Log\LoggerInterface;
 
 class NP extends AbstractCarrierOnline implements CarrierInterface
@@ -39,6 +44,9 @@ class NP extends AbstractCarrierOnline implements CarrierInterface
     private ResultFactory $resultFactory;
     private MethodFactory $rateMethodFactory;
     private NPModel $np;
+    private NpRequestResultInterfaceFactory $requestResultFactory;
+    private NPResource $npResource;
+    private TrackNumberManager $trackNumberManager;
 
     /**
      * NP constructor.
@@ -60,6 +68,9 @@ class NP extends AbstractCarrierOnline implements CarrierInterface
      * @param StockRegistryInterface $stockRegistry
      * @param ResultFactory $resultFactory
      * @param NPModel $np
+     * @param NpRequestResultInterfaceFactory $requestResultFactory
+     * @param NPResource $npResource
+     * @param TrackNumberManager $trackNumberManager
      * @param array $data
      */
     public function __construct(
@@ -80,6 +91,9 @@ class NP extends AbstractCarrierOnline implements CarrierInterface
         StockRegistryInterface $stockRegistry,
         ResultFactory $resultFactory,
         NPModel $np,
+        NpRequestResultInterfaceFactory $requestResultFactory,
+        NPResource $npResource,
+        TrackNumberManager $trackNumberManager,
         array $data = []
     ) {
         parent::__construct(
@@ -104,6 +118,9 @@ class NP extends AbstractCarrierOnline implements CarrierInterface
         $this->resultFactory = $resultFactory;
         $this->rateMethodFactory = $rateMethodFactory;
         $this->np = $np;
+        $this->requestResultFactory = $requestResultFactory;
+        $this->npResource = $npResource;
+        $this->trackNumberManager = $trackNumberManager;
     }
 
     /**
@@ -185,6 +202,26 @@ class NP extends AbstractCarrierOnline implements CarrierInterface
 
     protected function _doShipmentRequest(DataObject $request)
     {
-        //TODO: Implement _doShipmentRequest() method.
+        $result = $this->requestResultFactory->create();
+        $shipment = $request->getOrderShipment();
+        $order = $shipment->getOrder();
+        $customerId = $order->getCustomerId();
+
+        /** @var NPInterface $npInstance */
+        $npInstance = $this->npResource->load($this->np, $customerId, "customer_id");
+
+        if (!$npInstance->getId()) {
+            $npInstance->setTrackNumber($this->trackNumberManager->getNumber());
+            $npInstance->setCustomerId($customerId);
+
+            //Instance is currently created so does not already exist for sure
+            try {
+                $this->npResource->save($npInstance);
+            } catch (AlreadyExistsException $exception) {}
+        }
+        $result->setTrackingNumber($npInstance->getTrackNumber());
+        $result->setShippingLabelContent("300000" . $npInstance->getCustomerId());
+
+        return $result;
     }
 }
