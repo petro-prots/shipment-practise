@@ -224,4 +224,28 @@ class NP extends AbstractCarrierOnline implements CarrierInterface
 
         return $result;
     }
+
+    /**
+     * Sets All countries as available for delivery
+     *
+     * @param DataObject $request
+     *
+     * @return bool
+     */
+    public function checkAvailableShipCountries(DataObject $request)
+    {
+        return true;
+    }
+
+    /**
+     * Sets shipment method as valid
+     *
+     * @param DataObject $request
+     *
+     * @return bool
+     */
+    public function processAdditionalValidation(DataObject $request)
+    {
+        return true;
+    }
 }

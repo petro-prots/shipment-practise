@@ -20,12 +20,12 @@
             </zhiguli>
             <np>
                 <active>1</active>
-                <sallowspecific>0</sallowspecific>
+                <sallowspecific>1</sallowspecific>
                 <model>ProfStep\Shipment\Model\Carrier\NP</model>
                 <name>Nova Poshta</name>
                 <price>2.00</price>
                 <title>Доставка майбутнього</title>
-                <specificerrmsg>This shipping method is not available. To use this shipping method, please contact us.</specificerrmsg>
+                <specificerrmsg>GG WP.</specificerrmsg>
                 <handling_type>F</handling_type>
             </np>
         </carriers>
